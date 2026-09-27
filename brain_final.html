@@ -522,6 +522,26 @@ button { touch-action: manipulation; cursor: pointer; border: none; font-family:
 .rb-p.done { border-color:var(--green); }
 .rb-nick { font-size:11px; font-weight:700; color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .rb-live { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:700; color:var(--ink); }
+/* ── 두더지 잡기 / 짝 맞추기 / 9색 사이먼 ── */
+.gi-mole  { background:#FDE68A; }
+.gi-pairs { background:#FBCFE8; }
+.sim-grid.g9 { grid-template-columns:repeat(3,1fr); gap:10px; max-width:320px; }
+.sim-grid.g9 .sim-pad { border-radius:16px; }
+.mole-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; width:100%; aspect-ratio:1/1; background:linear-gradient(#86EFAC,#4ADE80); border-radius:var(--radius); padding:12px; margin-top:8px; }
+.mole-hole { position:relative; overflow:hidden; border-radius:50%; background:radial-gradient(circle at 50% 70%,#3F2A14 0 55%,#6B4423 56% 100%); touch-action:manipulation; }
+.mole-m { position:absolute; left:0; right:0; bottom:-70%; font-size:clamp(34px,11vw,52px); line-height:1; text-align:center; transition:bottom 0.12s ease-out; pointer-events:none; }
+.mole-hole.up .mole-m { bottom:18%; }
+.mole-hole.hit { background:radial-gradient(circle at 50% 70%,#FDE047 0 55%,#6B4423 56% 100%); }
+.mole-hole.boom { background:radial-gradient(circle at 50% 70%,#EF4444 0 55%,#6B4423 56% 100%); }
+.pair-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; width:100%; margin-top:8px; }
+.pair-card { aspect-ratio:3/4; border-radius:12px; background:linear-gradient(135deg,#7C3AED,#2563EB); border:none; transition:transform 0.18s, background 0.18s; display:flex; align-items:center; justify-content:center; }
+.pair-card .pair-f { font-size:clamp(26px,8vw,38px); opacity:0; transition:opacity 0.12s; }
+.pair-card::after { content:'?'; position:absolute; color:rgba(255,255,255,0.7); font-weight:800; font-size:22px; }
+.pair-card { position:relative; }
+.pair-card.open, .pair-card.done { background:var(--surface); border:1.5px solid var(--border); transform:rotateY(0deg) scale(1.03); }
+.pair-card.open::after, .pair-card.done::after { content:''; }
+.pair-card.open .pair-f, .pair-card.done .pair-f { opacity:1; }
+.pair-card.done { background:var(--green-light); border-color:var(--green); transform:scale(0.95); opacity:0.75; }
 </style>
 <script>
   window.__fbReady = new Promise(function(r){ window.__fbReadyResolve = r; });
@@ -540,11 +560,12 @@ const GAMES = [
   { id:'memory',   name:'순간 기억',    en:'MEMORY',   desc:'숫자 시퀀스, 길수록 고득점',   unit:'자리', best:'high', icon:'🧠', cls:'gi-memory'   },
   { id:'reaction', name:'반응 속도',    en:'REACTION', desc:'신호 즉시 탭, 5회 평균',       unit:'ms', best:'low',  icon:'⚡', cls:'gi-reaction' },
   { id:'spatial',  name:'위치 기억',    en:'SPATIAL',  desc:'깜빡인 순서대로 칸 누르기',     unit:'단계', best:'high', icon:'📍', cls:'gi-spatial'  },
-  { id:'math',     name:'빠른 암산',    en:'MATH',     desc:'60초 안에 최대한 많이 계산',    unit:'점', best:'high', icon:'➕', cls:'gi-math'     },
-  { id:'simon',    name:'사이먼',       en:'SIMON',    desc:'색 순서 그대로 따라 누르기',    unit:'단계', best:'high', icon:'🎵', cls:'gi-simon'    },
+  { id:'simon',    name:'사이먼',       en:'SIMON',    desc:'9색 순서 그대로 따라 누르기',    unit:'단계', best:'high', icon:'🎵', cls:'gi-simon'    },
   { id:'chimp',    name:'침팬지 테스트', en:'CHIMP',    desc:'숫자 위치 기억, 1부터 순서대로', unit:'개', best:'high', icon:'🐵', cls:'gi-chimp'    },
   { id:'dots',     name:'점 개수 비교',  en:'DOTS',     desc:'점이 더 많은 쪽을 빠르게',      unit:'점', best:'high', icon:'🔵', cls:'gi-dots'     },
   { id:'tf',       name:'번개 참/거짓',  en:'TRUE/FALSE', desc:'계산식이 맞는지 O/X 즉시 판단', unit:'점', best:'high', icon:'✅', cls:'gi-tf'       },
+  { id:'mole',     name:'두더지 잡기',   en:'WHACK',    desc:'두더지는 탭, 폭탄은 피하기',     unit:'점', best:'high', icon:'🔨', cls:'gi-mole'     },
+  { id:'pairs',    name:'짝 맞추기',     en:'PAIRS',    desc:'카드 뒤집어 같은 그림 8쌍 찾기', unit:'초', best:'low',  icon:'🃏', cls:'gi-pairs'    },
 ];
 const STROOP_COLORS = [
   {name:'빨강',hex:'#DC2626'},{name:'파랑',hex:'#2563EB'},{name:'초록',hex:'#16A34A'},{name:'노랑',hex:'#D97706'},
@@ -1203,7 +1224,7 @@ function renderHome(){
 /* ═══════════════════════════════════
    게임 래퍼
 ═══════════════════════════════════ */
-const GAME_FNS={stroop:startStroop,schulte:startSchulte,memory:startMemory,reaction:startReaction,spatial:startSpatial,math:startMath,simon:startSimon,chimp:startChimp,dots:startDots,tf:startTF};
+const GAME_FNS={stroop:startStroop,schulte:startSchulte,memory:startMemory,reaction:startReaction,spatial:startSpatial,simon:startSimon,chimp:startChimp,dots:startDots,tf:startTF,mole:startMole,pairs:startPairs};
 function renderGame(gameId){
   const meta=GAMES.find(g=>g.id===gameId);
   const nick=getNick();
@@ -1618,78 +1639,8 @@ function startSpatial(container,onDone){
   return()=>{ended=true;if(iv)clearInterval(iv);if(to)clearTimeout(to);};
 }
 
-function startMath(container,onDone){
-  let time=60,score=0,q=null,tid=null,ended=false;
-  function makeQ(){
-    let a,b,op,ans; const lvl=score, r=Math.random();
-    if(lvl<5){
-      op=Math.random()<0.5?'+':'-';
-      a=2+Math.floor(Math.random()*9); b=2+Math.floor(Math.random()*9);
-      if(op==='-'&&b>a){const t=a;a=b;b=t;}
-      ans=op==='+'?a+b:a-b;
-    }else if(lvl<12){
-      if(r<0.4){op='+';a=5+Math.floor(Math.random()*16);b=5+Math.floor(Math.random()*16);ans=a+b;}
-      else if(r<0.7){op='-';a=12+Math.floor(Math.random()*20);b=2+Math.floor(Math.random()*10);ans=a-b;}
-      else{op='×';a=2+Math.floor(Math.random()*8);b=2+Math.floor(Math.random()*8);ans=a*b;}
-    }else{
-      if(r<0.35){op='+';a=15+Math.floor(Math.random()*35);b=15+Math.floor(Math.random()*35);ans=a+b;}
-      else if(r<0.6){op='-';a=25+Math.floor(Math.random()*40);b=5+Math.floor(Math.random()*18);ans=a-b;}
-      else{op='×';a=3+Math.floor(Math.random()*11);b=3+Math.floor(Math.random()*11);ans=a*b;}
-    }
-    q={text:a+' '+op+' '+b, ans};
-  }
-  function options(ans){
-    const set=new Set([ans]); let guard=0;
-    while(set.size<4 && guard++<60){let off=Math.floor(Math.random()*9)-4;if(off===0)off=1;const d=ans+off;if(d<0)continue;set.add(d);}
-    let x=ans+1; while(set.size<4){if(x>=0&&x!==ans)set.add(x);x++;}
-    const arr=[...set];
-    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-    return arr;
-  }
-  function renderReady(){
-    container.innerHTML=`
-      <div class="ready-card">
-        <div class="ready-title">빠른 암산</div>
-        <div class="ready-desc">계산 결과를 <b>4개 중에서</b> 빠르게 고르세요.</div>
-        <div class="ready-hint">60초 · 정답 +1점 · 오답 -1점 · 점수 오를수록 어려워짐</div>
-        <button class="btn-play" id="s">시작하기</button>
-      </div>`;
-    container.querySelector('#s').onclick=play;
-  }
-  function play(){
-    score=0;time=60;makeQ();
-    container.innerHTML=`
-      <div class="stat-bar">
-        <div class="stat-pill"><div class="stat-pill-label">TIME</div><div class="stat-pill-val" id="t">${time}s</div></div>
-        <div class="stat-pill"><div class="stat-pill-label">SCORE</div><div class="stat-pill-val blue" id="sc">${score}</div></div>
-      </div>
-      <div class="stroop-stage" id="stage"><span class="math-q" id="q"></span></div>
-      <div class="stroop-grid" id="grid"></div>`;
-    render();
-    tid=setInterval(()=>{time--;if(time<=0){clearInterval(tid);if(!ended){ended=true;onDone(score);}}else updBar();},1000);
-  }
-  function render(){
-    const qEl=container.querySelector('#q');if(qEl)qEl.textContent=q.text;
-    const g=container.querySelector('#grid');if(!g)return;g.innerHTML='';
-    options(q.ans).forEach(v=>{
-      const b=document.createElement('button');b.className='math-btn';
-      b.textContent=v;b.onclick=()=>pick(v);g.appendChild(b);
-    });
-  }
-  function updBar(){const t=container.querySelector('#t'),sc=container.querySelector('#sc');if(t){t.textContent=time+'s';t.classList.toggle('warn',time<=5);}if(sc)sc.textContent=score;}
-  function pick(v){
-    if(ended)return;const st=container.querySelector('#stage');
-    if(v===q.ans){score++;if(st){st.classList.remove('no');st.classList.add('ok');}}
-    else{score=Math.max(0,score-1);if(st){st.classList.remove('ok');st.classList.add('no');}}
-    setTimeout(()=>st&&st.classList.remove('ok','no'),130);
-    makeQ();render();updBar();prog(score);
-  }
-  renderReady();
-  return()=>{clearInterval(tid);ended=true;};
-}
-
 function startSimon(container,onDone){
-  const COLORS=['#16A34A','#DC2626','#F59E0B','#2563EB'], FREQ=[330,392,494,587];
+  const COLORS=['#16A34A','#DC2626','#F59E0B','#2563EB','#9333EA','#EC4899','#06B6D4','#F97316','#84CC16'], FREQ=[262,294,330,349,392,440,494,523,587];
   let seq=[],inp=0,best=0,locked=true,ended=false,timers=[],ac=null;
   function beep(i){
     try{
@@ -1715,14 +1666,14 @@ function startSimon(container,onDone){
     }
     const t0=setTimeout(step,500);timers.push(t0);
   }
-  function nextRound(){seq.push(Math.floor(Math.random()*4));setStat();playSeq();}
+  function nextRound(){seq.push(Math.floor(Math.random()*COLORS.length));setStat();playSeq();}
   function buildBoard(){
     container.innerHTML=`
       <div class="stat-bar">
         <div class="stat-pill"><div class="stat-pill-label">LEVEL</div><div class="stat-pill-val" id="lv">0</div></div>
         <div class="stat-pill"><div class="stat-pill-label">BEST</div><div class="stat-pill-val blue" id="bs">0</div></div>
       </div>
-      <div class="sim-grid" id="board"></div>
+      <div class="sim-grid g9" id="board"></div>
       <div class="sp-status" id="st">순서를 보세요…</div>`;
     const b=container.querySelector('#board');
     COLORS.forEach((hex,i)=>{
@@ -1747,7 +1698,7 @@ function startSimon(container,onDone){
       <div class="ready-card">
         <div class="ready-title">사이먼</div>
         <div class="ready-desc">색 버튼이 <b>순서대로</b> 반짝입니다. 같은 순서로 따라 누르세요!</div>
-        <div class="ready-hint">한 단계 성공할 때마다 순서가 1개씩 길어짐 · 한 번 틀리면 끝 · 점수 = 도달 단계</div>
+        <div class="ready-hint">9색 3×3 판 · 한 단계 성공할 때마다 순서가 1개씩 길어짐 · 한 번 틀리면 끝 · 점수 = 도달 단계</div>
         <button class="btn-play" id="s">시작하기</button>
       </div>`;
     container.querySelector('#s').onclick=start;
@@ -1950,6 +1901,137 @@ function startTF(container,onDone){
   }
   renderReady();
   return()=>{clearInterval(tid);ended=true;};
+}
+
+/* ═══════════════════════════════════
+   11) 두더지 잡기
+═══════════════════════════════════ */
+function startMole(container,onDone){
+  const N=9, DUR=30;
+  let score=0,time=DUR,ended=false,holes=[],tid=null,spawnT=null,hideT=[];
+  function renderReady(){
+    container.innerHTML=`
+      <div class="ready-card">
+        <div class="ready-title">두더지 잡기</div>
+        <div class="ready-desc">튀어나오는 <b>🐹 두더지</b>를 빠르게 탭! <b>⭐ 황금 두더지</b>는 +3점, <b>💣 폭탄</b>은 -3점!</div>
+        <div class="ready-hint">30초 · 시간이 지날수록 더 빨라지고 여러 마리가 동시에 나와요</div>
+        <button class="btn-play" id="s">시작하기</button>
+      </div>`;
+    container.querySelector('#s').onclick=play;
+  }
+  function play(){
+    score=0;time=DUR;holes=Array(N).fill(null);
+    container.innerHTML=`
+      <div class="stat-bar">
+        <div class="stat-pill"><div class="stat-pill-label">TIME</div><div class="stat-pill-val" id="t">${time}s</div></div>
+        <div class="stat-pill"><div class="stat-pill-label">SCORE</div><div class="stat-pill-val blue" id="sc">0</div></div>
+      </div>
+      <div class="mole-grid" id="grid"></div>`;
+    const g=container.querySelector('#grid');
+    for(let i=0;i<N;i++){
+      const h=document.createElement('button');h.className='mole-hole';h.dataset.i=i;
+      h.innerHTML='<span class="mole-m"></span>';h.onpointerdown=(e)=>{e.preventDefault();whack(i);};
+      g.appendChild(h);
+    }
+    tid=setInterval(()=>{time--;updBar();if(time<=0)finish();},1000);
+    spawn();
+  }
+  function hole(i){return container.querySelectorAll('.mole-hole')[i];}
+  function show(i,type){
+    holes[i]=type;const h=hole(i);if(!h)return;
+    h.classList.remove('hit','boom');h.classList.add('up');
+    h.querySelector('.mole-m').textContent=type==='bomb'?'💣':type==='gold'?'⭐':'🐹';
+    const life=Math.max(520,1050-(DUR-time)*18);
+    hideT[i]=setTimeout(()=>hide(i),life);
+  }
+  function hide(i){holes[i]=null;const h=hole(i);if(h)h.classList.remove('up');}
+  function spawn(){
+    if(ended)return;
+    const elapsed=DUR-time, maxUp=elapsed<10?1:elapsed<20?2:3;
+    const up=holes.filter(Boolean).length;
+    if(up<maxUp){
+      const free=holes.map((v,i)=>v?null:i).filter(v=>v!==null);
+      if(free.length){
+        const i=free[Math.floor(Math.random()*free.length)], r=Math.random();
+        show(i, r<0.15?'bomb':r<0.25?'gold':'mole');
+      }
+    }
+    spawnT=setTimeout(spawn, Math.max(280,650-elapsed*12)+Math.random()*250);
+  }
+  function whack(i){
+    if(ended||!holes[i])return;
+    const type=holes[i],h=hole(i);
+    clearTimeout(hideT[i]);holes[i]=null;
+    if(type==='bomb'){score=Math.max(0,score-3);h.classList.add('boom');if(navigator.vibrate)try{navigator.vibrate(120);}catch(e){}}
+    else{score+=type==='gold'?3:1;h.classList.add('hit');}
+    updBar();prog(score);
+    hideT[i]=setTimeout(()=>{h.classList.remove('up','hit','boom');},180);
+  }
+  function updBar(){const t=container.querySelector('#t'),sc=container.querySelector('#sc');if(t){t.textContent=time+'s';t.classList.toggle('warn',time<=5);}if(sc)sc.textContent=score;}
+  function finish(){if(ended)return;ended=true;clearInterval(tid);clearTimeout(spawnT);hideT.forEach(clearTimeout);onDone(score);}
+  renderReady();
+  return()=>{ended=true;clearInterval(tid);clearTimeout(spawnT);hideT.forEach(clearTimeout);};
+}
+
+/* ═══════════════════════════════════
+   12) 짝 맞추기 (카드 뒤집기)
+═══════════════════════════════════ */
+function startPairs(container,onDone){
+  const POOL=['🍎','🍌','🍇','🍓','🍑','🍉','🥝','🍒','🐶','🐱','🐰','🦊','🐼','🐸','🐧','🦁'];
+  let cards=[],open=[],matched=0,moves=0,startT=0,tick=null,lock=false,ended=false,to=null;
+  function renderReady(){
+    container.innerHTML=`
+      <div class="ready-card">
+        <div class="ready-title">짝 맞추기</div>
+        <div class="ready-desc">카드를 두 장씩 뒤집어 <b>같은 그림</b>을 찾으세요. 8쌍을 다 찾으면 끝!</div>
+        <div class="ready-hint">점수 = 걸린 시간(초) · 빠를수록 좋음 · 위치를 잘 기억하세요</div>
+        <button class="btn-play" id="s">시작하기</button>
+      </div>`;
+    container.querySelector('#s').onclick=play;
+  }
+  function play(){
+    const pick=POOL.slice().sort(()=>Math.random()-0.5).slice(0,8);
+    cards=pick.concat(pick);
+    for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+    open=[];matched=0;moves=0;lock=false;startT=performance.now();
+    container.innerHTML=`
+      <div class="stat-bar">
+        <div class="stat-pill"><div class="stat-pill-label">PAIRS</div><div class="stat-pill-val blue" id="pr">0/8</div></div>
+        <div class="stat-pill"><div class="stat-pill-label">TIME</div><div class="stat-pill-val" id="el">0.0s</div></div>
+      </div>
+      <div class="pair-grid" id="grid"></div>
+      <div class="sp-status" id="st">두 장씩 뒤집어 보세요</div>`;
+    const g=container.querySelector('#grid');
+    cards.forEach((e,i)=>{
+      const c=document.createElement('button');c.className='pair-card';c.dataset.i=i;
+      c.innerHTML=`<span class="pair-f">${e}</span>`;c.onclick=()=>flip(i,c);g.appendChild(c);
+    });
+    tick=setInterval(()=>{const t=container.querySelector('#el');if(t)t.textContent=((performance.now()-startT)/1000).toFixed(1)+'s';},100);
+  }
+  function flip(i,c){
+    if(lock||ended||c.classList.contains('open')||c.classList.contains('done'))return;
+    c.classList.add('open');open.push([i,c]);
+    if(open.length<2)return;
+    moves++;
+    const [[a,ca],[b,cb]]=open;open=[];
+    if(cards[a]===cards[b]){
+      matched++;
+      setTimeout(()=>{ca.classList.add('done');cb.classList.add('done');},200);
+      const pr=container.querySelector('#pr');if(pr)pr.textContent=matched+'/8';
+      prog(matched+'/8');
+      if(matched===8){
+        clearInterval(tick);ended=true;
+        const f=Math.round((performance.now()-startT)/100)/10;
+        const st=container.querySelector('#st');if(st)st.textContent=`완료! ${moves}번 만에 성공`;
+        to=setTimeout(()=>onDone(f),700);
+      }
+    }else{
+      lock=true;
+      to=setTimeout(()=>{ca.classList.remove('open');cb.classList.remove('open');lock=false;},650);
+    }
+  }
+  renderReady();
+  return()=>{ended=true;clearInterval(tick);clearTimeout(to);};
 }
 
 /* ═══════════════════════════════════
