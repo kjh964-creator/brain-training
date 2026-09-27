@@ -431,6 +431,97 @@ button { touch-action: manipulation; cursor: pointer; border: none; font-family:
 .home-rank-title { font-family:'Bricolage Grotesque','Noto Sans KR',sans-serif; font-weight:800; font-size:16px; color:#92400E; }
 .home-rank-sub { font-size:12px; color:#B45309; margin-top:1px; }
 .home-rank-arrow { font-size:18px; color:#D97706; }
+.home-battle-btn { background:linear-gradient(135deg,#DBEAFE,#EFF6FF); border-color:#BFDBFE; }
+.home-battle-btn .home-rank-title { color:#1E40AF; }
+.home-battle-btn .home-rank-sub { color:#2563EB; }
+.home-battle-btn .home-rank-arrow { color:#2563EB; }
+.btn-play:disabled { opacity:0.4; }
+
+/* ── 새 게임: 침팬지 / 점 개수 / 참거짓 ── */
+.gi-chimp { background:#FEF3C7; }
+.gi-dots  { background:#E0E7FF; }
+.gi-tf    { background:#DCFCE7; }
+.chimp-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; width:100%; aspect-ratio:1/1; background:var(--soft); border-radius:var(--radius); padding:8px; margin-top:8px; }
+.chimp-cell { border-radius:10px; font-family:'Bricolage Grotesque','Noto Sans KR',sans-serif; font-weight:800; font-size:clamp(18px,6vw,28px); background:var(--surface); border:1.5px solid var(--border); color:var(--ink); transition:transform 0.08s; }
+.chimp-cell:active { transform:scale(0.93); }
+.chimp-cell.empty, .chimp-cell.done { visibility:hidden; }
+.chimp-cell.hide { background:var(--ink); border-color:var(--ink); color:transparent; }
+.chimp-cell.no { background:var(--red); border-color:var(--red); color:#fff; }
+.dots-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.dots-box { background:var(--surface); border:2px solid var(--border); border-radius:var(--radius); aspect-ratio:1/1.25; padding:8px; transition:transform 0.08s, background 80ms, border-color 80ms; }
+.dots-box:active { transform:scale(0.97); }
+.dots-box.ok { background:var(--green-light); border-color:var(--green); }
+.dots-box.no { background:var(--red-light); border-color:var(--red); }
+.dots-svg { width:100%; height:100%; display:block; }
+.tf-q { font-family:'Bricolage Grotesque','Noto Sans KR',sans-serif; font-weight:800; font-size:clamp(34px,10vw,48px); color:var(--ink); }
+.tf-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.tf-btn { padding:22px 10px; border-radius:16px; color:#fff; font-size:18px; font-weight:700; transition:transform 0.08s; }
+.tf-btn:active { transform:scale(0.94); }
+.tf-btn.o { background:var(--green); }
+.tf-btn.x { background:var(--red); }
+
+/* ── 관리자 페이지 ── */
+.adm-head { display:flex; align-items:baseline; justify-content:space-between; margin:8px 2px 4px; }
+.adm-title { font-family:'Bricolage Grotesque','Noto Sans KR',sans-serif; font-weight:800; font-size:22px; letter-spacing:-0.02em; }
+.adm-count { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; color:var(--blue); }
+.adm-count.full { color:var(--green); }
+.adm-sub { font-size:12px; color:var(--muted); margin:0 2px 12px; line-height:1.5; }
+.adm-slots { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-bottom:16px; }
+.adm-slot { aspect-ratio:1/1; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; background:var(--green-light); border:2px solid var(--green); }
+.adm-slot.empty { background:transparent; border:2px dashed var(--border); color:var(--muted); font-size:12px; }
+.adm-list { display:flex; flex-direction:column; gap:8px; margin-bottom:22px; }
+.adm-row { display:flex; align-items:stretch; gap:8px; }
+.adm-tg { flex:1; min-width:0; display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:var(--radius-sm); text-align:left; background:var(--surface); border:2px solid var(--border); transition:transform 0.1s, border-color 0.15s, background 0.15s; }
+.adm-tg:active { transform:scale(0.98); }
+.adm-row.on .adm-tg { border-color:var(--green); background:var(--green-light); }
+.adm-row.off .adm-tg { opacity:0.6; }
+.adm-ic { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.adm-nm { flex:1; min-width:0; }
+.adm-nm b { display:block; font-size:15px; }
+.adm-nm span { display:block; font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.adm-st { font-size:12px; font-weight:700; padding:5px 10px; border-radius:999px; flex-shrink:0; white-space:nowrap; }
+.adm-row.on .adm-st { background:var(--green); color:#fff; }
+.adm-row.off .adm-st { background:var(--soft); color:var(--muted); }
+.adm-del { width:48px; border-radius:var(--radius-sm); background:var(--red-light); color:var(--red); font-size:18px; flex-shrink:0; transition:transform 0.1s; }
+.adm-del:active { transform:scale(0.94); }
+.adm-sec { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; color:var(--muted); margin:0 2px 8px; }
+.adm-saved { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); text-align:center; min-height:16px; margin-top:10px; }
+.toast { position:fixed; left:50%; bottom:32px; transform:translateX(-50%); background:var(--ink); color:#fff; padding:12px 18px; border-radius:999px; font-size:13px; font-weight:700; z-index:1100; max-width:90vw; text-align:center; animation:fadeIn 0.15s; }
+
+/* ── 친구와 대전 ── */
+.bt-hero { background:linear-gradient(135deg,#1E3A8A,#2563EB); color:#fff; border-radius:var(--radius); padding:20px; margin:4px 0 18px; }
+.bt-hero-t { font-family:'Bricolage Grotesque','Noto Sans KR',sans-serif; font-weight:800; font-size:24px; letter-spacing:-0.02em; margin-bottom:6px; }
+.bt-hero-s { font-size:13px; line-height:1.6; opacity:0.85; }
+.bt-sec { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.18em; color:var(--muted); margin:0 2px 8px; }
+.bt-games { display:flex; flex-wrap:wrap; gap:6px; }
+.bt-game { padding:9px 14px; border-radius:999px; background:var(--surface); border:1.5px solid var(--border); font-size:13px; font-weight:700; color:var(--ink2); }
+.bt-game.sel { background:var(--ink); border-color:var(--ink); color:#fff; }
+.bt-join { display:grid; grid-template-columns:1fr 96px; gap:8px; }
+.bt-code-in { text-align:center; letter-spacing:0.4em; font-size:24px; padding:12px; }
+.bt-codebox { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px; text-align:center; margin-bottom:18px; }
+.bt-code-l { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.2em; color:var(--muted); }
+.bt-code { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:52px; letter-spacing:0.18em; color:var(--blue); line-height:1.2; }
+.bt-code-s { font-size:12px; color:var(--muted); }
+.bt-link { margin-top:12px; padding:9px 16px; border-radius:999px; background:var(--blue-light); color:var(--blue); font-size:13px; font-weight:700; }
+.bt-cur { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; font-size:14px; color:var(--ink2); }
+.bt-pls { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; }
+.bt-pl { padding:14px 12px; border-radius:var(--radius-sm); background:var(--surface); border:1.5px solid var(--border); font-size:14px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bt-pl.me { border-color:var(--blue); background:var(--blue-light); }
+.bt-pl.empty { border-style:dashed; color:var(--muted); font-weight:500; background:transparent; }
+.bt-wait { text-align:center; color:var(--muted); font-size:14px; padding:22px 0; }
+.bt-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; padding:24px 0; }
+.bt-cd-game { font-size:16px; font-weight:700; color:var(--ink2); }
+.bt-cd { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:120px; line-height:1; color:var(--blue); animation:fadeIn 0.2s; }
+.bt-msg { font-size:14px; color:var(--muted); }
+.bt-big { font-size:56px; }
+.bt-my { font-family:'Bricolage Grotesque',sans-serif; font-weight:800; font-size:80px; line-height:1; color:var(--blue); }
+.bt-my span { font-family:'JetBrains Mono',monospace; font-size:16px; color:var(--muted); margin-left:4px; }
+.rb-board { display:flex; gap:6px; margin-bottom:8px; }
+.rb-p { flex:1; min-width:0; background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:8px 10px; }
+.rb-p.me { border-color:var(--blue); background:var(--blue-light); }
+.rb-p.done { border-color:var(--green); }
+.rb-nick { font-size:11px; font-weight:700; color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rb-live { font-family:'JetBrains Mono',monospace; font-size:18px; font-weight:700; color:var(--ink); }
 </style>
 <script>
   window.__fbReady = new Promise(function(r){ window.__fbReadyResolve = r; });
@@ -451,6 +542,9 @@ const GAMES = [
   { id:'spatial',  name:'위치 기억',    en:'SPATIAL',  desc:'깜빡인 순서대로 칸 누르기',     unit:'단계', best:'high', icon:'📍', cls:'gi-spatial'  },
   { id:'math',     name:'빠른 암산',    en:'MATH',     desc:'60초 안에 최대한 많이 계산',    unit:'점', best:'high', icon:'➕', cls:'gi-math'     },
   { id:'simon',    name:'사이먼',       en:'SIMON',    desc:'색 순서 그대로 따라 누르기',    unit:'단계', best:'high', icon:'🎵', cls:'gi-simon'    },
+  { id:'chimp',    name:'침팬지 테스트', en:'CHIMP',    desc:'숫자 위치 기억, 1부터 순서대로', unit:'개', best:'high', icon:'🐵', cls:'gi-chimp'    },
+  { id:'dots',     name:'점 개수 비교',  en:'DOTS',     desc:'점이 더 많은 쪽을 빠르게',      unit:'점', best:'high', icon:'🔵', cls:'gi-dots'     },
+  { id:'tf',       name:'번개 참/거짓',  en:'TRUE/FALSE', desc:'계산식이 맞는지 O/X 즉시 판단', unit:'점', best:'high', icon:'✅', cls:'gi-tf'       },
 ];
 const STROOP_COLORS = [
   {name:'빨강',hex:'#DC2626'},{name:'파랑',hex:'#2563EB'},{name:'초록',hex:'#16A34A'},{name:'노랑',hex:'#D97706'},
@@ -465,21 +559,41 @@ const ADMIN_NICK = '김진호';
 const ADMIN_PIN  = '8199';
 function isAdmin(){ return getNick()===ADMIN_NICK && getPin()===ADMIN_PIN; }
 
-/* ── 게임 표시 설정 (관리자가 켜고 끔; Firebase로 모든 사용자 공유) ── */
-let DISABLED = new Set(JSON.parse(localStorage.getItem('bt_disabled')||'[]'));
-function activeGames(){ return GAMES.filter(g=>!DISABLED.has(g.id)); }
-function applyDisabled(arr){ DISABLED=new Set(arr||[]); localStorage.setItem('bt_disabled', JSON.stringify([...DISABLED])); }
+/* ── 홈에 올릴 게임 선택 (관리자가 최대 5개 선정; Firebase로 모든 사용자 공유) ──
+   config/games = { enabled:[...], disabled:[...] }  (disabled는 예전 버전 앱 호환용) */
+const MAX_ACTIVE = 5;
+function normEnabled(arr){ const ids=GAMES.map(g=>g.id); return (arr||[]).filter(id=>ids.includes(id)).slice(0,MAX_ACTIVE); }
+function defaultEnabled(disabled){ return GAMES.filter(g=>!(disabled||[]).includes(g.id)).slice(0,MAX_ACTIVE).map(g=>g.id); }
+let ENABLED = (function(){
+  try{ const r=JSON.parse(localStorage.getItem('bt_enabled')||'null'); if(Array.isArray(r) && normEnabled(r).length) return new Set(normEnabled(r)); }catch(e){}
+  return new Set(defaultEnabled());
+})();
+function activeGames(){ const a=GAMES.filter(g=>ENABLED.has(g.id)); return a.length?a:GAMES.slice(0,MAX_ACTIVE); }
+function applyEnabled(arr){
+  const n=normEnabled(arr);
+  ENABLED=new Set(n.length?n:defaultEnabled());
+  try{ localStorage.setItem('bt_enabled', JSON.stringify([...ENABLED])); }catch(e){}
+}
 function loadGameConfig(){
   if(window.FBWEB && window.FBWEB.getConfig){
-    return window.FBWEB.getConfig().then(arr=>{ if(Array.isArray(arr)) applyDisabled(arr); return [...DISABLED]; }).catch(()=>[...DISABLED]);
+    return window.FBWEB.getConfig().then(cfg=>{
+      if(cfg && Array.isArray(cfg.enabled)) applyEnabled(cfg.enabled);
+      else if(cfg && Array.isArray(cfg.disabled)) applyEnabled(defaultEnabled(cfg.disabled));
+      return [...ENABLED];
+    }).catch(()=>[...ENABLED]);
   }
-  return Promise.resolve([...DISABLED]);
+  return Promise.resolve([...ENABLED]);
 }
 function saveGameConfig(arr){
-  applyDisabled(arr);
-  if(window.FBWEB && window.FBWEB.setConfig) return window.FBWEB.setConfig([...DISABLED]);
+  applyEnabled(arr);
+  const enabled=[...ENABLED], disabled=GAMES.map(g=>g.id).filter(id=>!ENABLED.has(id));
+  if(window.FBWEB && window.FBWEB.setConfig) return window.FBWEB.setConfig({ enabled, disabled });
   return Promise.resolve('ok');
 }
+
+/* 대전 중 실시간 점수 보고용 훅 (일반 플레이에서는 null) */
+let PROGRESS = null;
+function prog(v){ if(PROGRESS){ try{ PROGRESS(v); }catch(e){} } }
 
 /* Android(네이티브 Firebase) 브릿지 사용 가능 여부 */
 const HAS_ANDROID = (typeof Android !== 'undefined' && Android && typeof Android.submitScore === 'function');
@@ -695,86 +809,94 @@ function showAdminLogin(){
   setTimeout(()=>nEl.focus(),100);
 }
 
-/* ── 관리자: 게임 초기화 메뉴 ── */
-function showResetMenu(){
-  const ov=document.createElement('div');
-  ov.className='modal-overlay';
-  const gameBtns=GAMES.map(g=>`<button class="reset-game-btn" data-id="${g.id}">${g.icon} ${g.name} 초기화</button>`).join('');
-  ov.innerHTML=`
-    <div class="modal-box">
-      <div class="modal-title">🔧 게임 랭킹 초기화</div>
-      <div class="modal-msg" style="margin-bottom:16px">초기화할 게임을 선택하세요.<br>되돌릴 수 없습니다.</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-        ${gameBtns}
-        <button class="reset-game-btn all" data-id="all">⚠️ 전체 게임 초기화</button>
-      </div>
-      <button class="modal-btn cancel" id="mClose" style="width:100%">닫기</button>
-    </div>`;
-  document.body.appendChild(ov);
-  const close=()=>ov.remove();
-  ov.querySelector('#mClose').onclick=close;
-  ov.addEventListener('click',(e)=>{ if(e.target===ov) close(); });
-  ov.querySelectorAll('.reset-game-btn').forEach(btn=>{
-    btn.onclick=()=>{
-      const gid=btn.dataset.id;
-      const name = gid==='all' ? '전체 게임' : GAMES.find(g=>g.id===gid).name;
-      close();
-      showConfirm(`${name} 초기화`, `${name}의 모든 랭킹 기록이 삭제됩니다.\n정말 진행할까요?`, ()=>{
-        // 진행 중 표시
-        const busy=document.createElement('div');
-        busy.className='modal-overlay';
-        busy.innerHTML=`<div class="modal-box" style="text-align:center"><div class="modal-title" style="margin-bottom:6px">초기화 중...</div><div class="modal-msg" style="margin:0">잠시만 기다려주세요</div></div>`;
-        document.body.appendChild(busy);
-        resetLeaderboardRemote(gid).then(code=>{
-          busy.remove();
-          if(code==='ok'){
-            showConfirm('완료', `${name} 랭킹이 초기화되었습니다.`, ()=>go('home'));
-          } else {
-            showConfirm('오류', '초기화 중 문제가 발생했습니다.\n네트워크 확인 후 다시 시도해주세요.', null);
-          }
-        });
-      });
-    };
+/* ── 짧은 알림 ── */
+function showToast(msg){
+  const old=document.querySelector('.toast'); if(old) old.remove();
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),1800);
+}
+
+/* ── 관리자: 랭킹 초기화 실행 (게임별 / 전체) ── */
+function doReset(gid){
+  const name = gid==='all' ? '전체 게임' : GAMES.find(g=>g.id===gid).name;
+  showConfirm(`${name} 초기화`, `${name}의 모든 랭킹 기록이 삭제됩니다.\n정말 진행할까요?`, ()=>{
+    const busy=document.createElement('div');
+    busy.className='modal-overlay';
+    busy.innerHTML=`<div class="modal-box" style="text-align:center"><div class="modal-title" style="margin-bottom:6px">초기화 중...</div><div class="modal-msg" style="margin:0">잠시만 기다려주세요</div></div>`;
+    document.body.appendChild(busy);
+    resetLeaderboardRemote(gid).then(code=>{
+      busy.remove();
+      if(code==='ok') showToast(`✓ ${name} 랭킹 초기화 완료`);
+      else showConfirm('오류', '초기화 중 문제가 발생했습니다.\n네트워크 확인 후 다시 시도해주세요.', null);
+    });
   });
 }
 
-/* ── 관리자 패널: 게임 표시 ON/OFF + 랭킹 초기화 ── */
-function showAdminPanel(){
-  const ov=document.createElement('div'); ov.className='modal-overlay';
-  const rows=GAMES.map(g=>{
-    const on=!DISABLED.has(g.id);
-    return `<button class="reset-game-btn adm-toggle" data-id="${g.id}" style="display:flex;justify-content:space-between;align-items:center;${on?'':'opacity:0.5'}">
-      <span>${g.icon} ${g.name}</span>
-      <span class="adm-state" style="font-weight:700;color:${on?'var(--green)':'var(--muted)'}">${on?'표시 ON':'숨김 OFF'}</span>
-    </button>`;
-  }).join('');
-  ov.innerHTML=`
-    <div class="modal-box">
-      <div class="modal-title">⚙️ 관리자</div>
-      <div class="modal-msg" style="margin-bottom:12px">게임을 눌러 표시/숨김을 바꾸세요.<br>모든 사용자에게 적용됩니다.</div>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;max-height:46vh;overflow-y:auto">${rows}</div>
-      <button class="reset-game-btn all" id="admReset" style="margin-bottom:8px">🗑️ 랭킹 초기화</button>
-      <button class="modal-btn cancel" id="admClose" style="width:100%">닫기</button>
-    </div>`;
-  document.body.appendChild(ov);
-  const close=()=>ov.remove();
-  ov.querySelector('#admClose').onclick=close;
-  ov.querySelector('#admReset').onclick=()=>{ close(); showResetMenu(); };
-  ov.addEventListener('click',(e)=>{ if(e.target===ov) close(); });
-  ov.querySelectorAll('.adm-toggle').forEach(btn=>{
-    btn.onclick=()=>{
-      const id=btn.dataset.id;
-      if(DISABLED.has(id)){ DISABLED.delete(id); }
-      else{
-        if(GAMES.length - DISABLED.size <= 1){ return; } // 최소 1개는 남김
-        DISABLED.add(id);
-      }
-      const on=!DISABLED.has(id);
-      btn.style.opacity=on?'1':'0.5';
-      const st=btn.querySelector('.adm-state'); st.textContent=on?'표시 ON':'숨김 OFF'; st.style.color=on?'var(--green)':'var(--muted)';
-      saveGameConfig([...DISABLED]);
-    };
-  });
+/* ═══════════════════════════════════
+   관리자 페이지 (홈 게임 선정 + 랭킹 초기화 한 화면)
+═══════════════════════════════════ */
+function renderAdmin(){
+  if(!isAdmin()){ go('home'); return; }
+  const nick=getNick();
+  const s=document.createElement('div'); s.className='screen';
+  s.innerHTML=`
+    <div class="top-bar">
+      <button class="back-btn" id="bk">홈으로</button>
+      <span class="top-title">ADMIN</span>
+      <div class="top-nick">${nick}</div>
+    </div>
+    <div class="adm-head">
+      <div class="adm-title">홈에 올릴 게임</div>
+      <div class="adm-count" id="admCnt"></div>
+    </div>
+    <div class="adm-sub">게임을 탭해서 넣기/빼기 · 최대 ${MAX_ACTIVE}개<br>저장 즉시 모든 사용자(앱·웹) 홈에 반영됩니다 · 🗑️ = 그 게임 랭킹 초기화</div>
+    <div class="adm-slots" id="admSlots"></div>
+    <div class="adm-list" id="admList"></div>
+    <div class="adm-sec">전체 관리</div>
+    <button class="reset-game-btn all" id="admResetAll">⚠️ 전체 게임 랭킹 초기화</button>
+    <div class="adm-saved" id="admSaved"></div>`;
+  app.appendChild(s);
+  s.querySelector('#bk').onclick=()=>go('home');
+  s.querySelector('#admResetAll').onclick=()=>doReset('all');
+  const cnt=s.querySelector('#admCnt'), slots=s.querySelector('#admSlots'), list=s.querySelector('#admList'), saved=s.querySelector('#admSaved');
+
+  function draw(){
+    const on=GAMES.filter(g=>ENABLED.has(g.id));
+    cnt.textContent=`${on.length} / ${MAX_ACTIVE}`;
+    cnt.classList.toggle('full', on.length===MAX_ACTIVE);
+    slots.innerHTML=Array.from({length:MAX_ACTIVE},(_,i)=> on[i]
+      ? `<div class="adm-slot" title="${on[i].name}">${on[i].icon}</div>`
+      : `<div class="adm-slot empty">빈칸</div>`).join('');
+    list.innerHTML=GAMES.map(g=>{
+      const isOn=ENABLED.has(g.id);
+      return `<div class="adm-row ${isOn?'on':'off'}">
+        <button class="adm-tg" data-id="${g.id}">
+          <span class="adm-ic ${g.cls}">${g.icon}</span>
+          <span class="adm-nm"><b>${g.name}</b><span>${g.desc}</span></span>
+          <span class="adm-st">${isOn?'✓ 홈 노출':'+ 넣기'}</span>
+        </button>
+        <button class="adm-del" data-id="${g.id}" title="${g.name} 랭킹 초기화">🗑️</button>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.adm-tg').forEach(b=>b.onclick=()=>toggle(b.dataset.id));
+    list.querySelectorAll('.adm-del').forEach(b=>b.onclick=()=>doReset(b.dataset.id));
+  }
+  function toggle(id){
+    const next=new Set(ENABLED);
+    if(next.has(id)){
+      if(next.size<=1){ showToast('최소 1개는 남겨야 해요'); return; }
+      next.delete(id);
+    } else {
+      if(next.size>=MAX_ACTIVE){ showToast(`최대 ${MAX_ACTIVE}개예요 · 먼저 하나를 빼주세요`); return; }
+      next.add(id);
+    }
+    saved.textContent='저장 중...';
+    const p=saveGameConfig(GAMES.map(g=>g.id).filter(x=>next.has(x)));
+    draw();
+    Promise.resolve(p).then(r=>{ saved.textContent = r==='ok' ? '✓ 저장됨 · 모든 사용자에게 적용' : '⚠️ 서버 저장 실패 (이 기기에만 적용됨) · 규칙 게시 확인'; });
+  }
+  draw();
 }
 
 /* ═══════════════════════════════════
@@ -793,6 +915,9 @@ function go(view, opts={}){
     case 'result': renderResult(opts); break;
     case 'nick':   renderNick(); break;
     case 'ranking': renderRanking(opts.gameId||GAMES[0].id); break;
+    case 'admin':  renderAdmin(); break;
+    case 'battle': renderBattle(opts); break;
+    case 'room':   renderRoom(opts); break;
   }
 }
 
@@ -1000,6 +1125,9 @@ function renderNick(){
    홈
 ═══════════════════════════════════ */
 function renderHome(){
+  // 초대 링크(?room=1234)로 들어왔으면 대전 입장으로 바로 이동
+  let pending=null; try{ pending=sessionStorage.getItem('bt_pending_room'); }catch(e){}
+  if(pending){ try{ sessionStorage.removeItem('bt_pending_room'); }catch(e){} go('battle',{code:pending}); return; }
   const nick=getNick(), ts=getTotalScore(), bdg=calcBadge(ts);
   const s=document.createElement('div'); s.className='screen';
   s.innerHTML=`
@@ -1027,6 +1155,14 @@ function renderHome(){
       </span>
       <span class="home-rank-arrow">→</span>
     </button>
+    <button class="home-rank-btn home-battle-btn" id="battleBtn">
+      <span class="home-rank-icon">👥</span>
+      <span class="home-rank-text">
+        <span class="home-rank-title">친구와 대전</span>
+        <span class="home-rank-sub">방 코드로 모여서 실시간 점수 대결</span>
+      </span>
+      <span class="home-rank-arrow">→</span>
+    </button>
     <div class="game-list" id="gList"></div>
     <div class="home-footer">기록은 자동 저장됩니다</div>`;
   app.appendChild(s);
@@ -1036,7 +1172,8 @@ function renderHome(){
       go('nick');
     });
   };
-  const _ab=s.querySelector('#adminBtn'); if(_ab) _ab.onclick=()=>showAdminPanel();
+  const _ab=s.querySelector('#adminBtn'); if(_ab) _ab.onclick=()=>go('admin');
+  s.querySelector('#battleBtn').onclick=()=>go('battle');
   s.querySelector('#rankBtn').onclick=()=>go('ranking',{gameId:GAMES[0].id});
   const list=s.querySelector('#gList');
   const AG=activeGames();
@@ -1076,6 +1213,7 @@ function renderHome(){
 /* ═══════════════════════════════════
    게임 래퍼
 ═══════════════════════════════════ */
+const GAME_FNS={stroop:startStroop,schulte:startSchulte,memory:startMemory,reaction:startReaction,spatial:startSpatial,math:startMath,simon:startSimon,chimp:startChimp,dots:startDots,tf:startTF};
 function renderGame(gameId){
   const meta=GAMES.find(g=>g.id===gameId);
   const nick=getNick();
@@ -1132,8 +1270,7 @@ function renderGame(gameId){
     const {list,myRank,total}=await submitScore(gameId,nick,score);
     go('result',{gameId,score,list,myRank,total});
   };
-  const fns={stroop:startStroop,schulte:startSchulte,memory:startMemory,reaction:startReaction,spatial:startSpatial,math:startMath,simon:startSimon};
-  cleanup=fns[gameId](body,onDone);
+  cleanup=GAME_FNS[gameId](body,onDone);
 }
 
 /* ═══════════════════════════════════
@@ -1270,7 +1407,7 @@ function startStroop(container,onDone){
     if(name===trial.color.name){score++;st.classList.remove('no');st.classList.add('ok');}
     else{score=Math.max(0,score-1);st.classList.remove('ok');st.classList.add('no');}
     setTimeout(()=>st&&st.classList.remove('ok','no'),130);
-    newTrial();updWord();updBar();
+    newTrial();updWord();updBar();prog(score);
   }
   renderReady();
   return()=>{clearInterval(tid);ended=true;};
@@ -1315,7 +1452,7 @@ function startSchulte(container,onDone){
   function tap(n,cell){
     if(n===next){
       if(n===25){clearInterval(tickId);const f=(performance.now()-startT)/1000;if(!ended){ended=true;onDone(Math.round(f*10)/10);}}
-      else{next++;const nx=container.querySelector('#nx');if(nx)nx.textContent=next;cell.classList.add('done');cell.disabled=true;}
+      else{next++;prog((next-1)+'/25');const nx=container.querySelector('#nx');if(nx)nx.textContent=next;cell.classList.add('done');cell.disabled=true;}
     }else{cell.classList.add('wrong');setTimeout(()=>cell.classList.remove('wrong'),160);}
   }
   renderReady();
@@ -1371,7 +1508,7 @@ function startMemory(container,onDone){
     ib.innerHTML=input.length?input:'<span class="ph">_</span>';
     container.querySelector('#ok').disabled=input.length!==length;
   }
-  function submit(){if(input===seq)next(length+1);else if(!ended){ended=true;onDone(length-1);}}
+  function submit(){if(input===seq){prog(length);next(length+1);}else if(!ended){ended=true;onDone(length-1);}}
   renderReady();
   return()=>{clearTimeout(st);ended=true;};
 }
@@ -1404,7 +1541,7 @@ function startReaction(container,onDone){
   function onTap(){
     if(phase==='wait'){clearTimeout(wt);phase='fail';render();}
     else if(phase==='go'){
-      const ms=Math.round(performance.now()-startT);last=ms;times.push(ms);
+      const ms=Math.round(performance.now()-startT);last=ms;times.push(ms);prog(times.length+'/5');
       if(times.length>=5){const avg=Math.round(times.reduce((a,b)=>a+b)/5);if(!ended){ended=true;onDone(avg);}}
       else{round++;phase='between';render();}
     }else if(phase==='fail'||phase==='ready'||phase==='between')beginRound();
@@ -1479,7 +1616,7 @@ function startSpatial(container,onDone){
       cs[i].classList.add('ok');setTimeout(()=>{if(cs[i])cs[i].classList.remove('ok');},170);
       inp++;
       if(inp>=seq.length){
-        best=length;locked=true;setStat();setMsg('성공! 다음 단계 →');
+        best=length;locked=true;setStat();prog(best);setMsg('성공! 다음 단계 →');
         length++;to=setTimeout(round,650);
       }
     }else{
@@ -1555,7 +1692,7 @@ function startMath(container,onDone){
     if(v===q.ans){score++;if(st){st.classList.remove('no');st.classList.add('ok');}}
     else{score=Math.max(0,score-1);if(st){st.classList.remove('ok');st.classList.add('no');}}
     setTimeout(()=>st&&st.classList.remove('ok','no'),130);
-    makeQ();render();updBar();
+    makeQ();render();updBar();prog(score);
   }
   renderReady();
   return()=>{clearInterval(tid);ended=true;};
@@ -1609,7 +1746,7 @@ function startSimon(container,onDone){
     flash(i,170);
     if(i===seq[inp]){
       inp++;
-      if(inp>=seq.length){best=seq.length;locked=true;setStat();setMsg('좋아요! 다음 →');const t=setTimeout(nextRound,750);timers.push(t);}
+      if(inp>=seq.length){best=seq.length;locked=true;setStat();prog(best);setMsg('좋아요! 다음 →');const t=setTimeout(nextRound,750);timers.push(t);}
     }else{
       locked=true;setMsg('틀렸어요! 기록 '+best+'단계');
       const t=setTimeout(()=>{if(!ended){ended=true;onDone(best);}},800);timers.push(t);
@@ -1629,13 +1766,472 @@ function startSimon(container,onDone){
   return()=>{ended=true;timers.forEach(clearTimeout);try{if(ac)ac.close();}catch(e){}};
 }
 
+/* ═══════════════════════════════════
+   8) 침팬지 테스트
+═══════════════════════════════════ */
+function startChimp(container,onDone){
+  const N=25;
+  let level=4,best=0,lives=3,next=1,pos={},locked=false,ended=false,to=null;
+  function renderReady(){
+    container.innerHTML=`
+      <div class="ready-card">
+        <div class="ready-title">침팬지 테스트</div>
+        <div class="ready-desc">숫자를 <b>1부터 순서대로</b> 탭하세요. <b>1을 누르는 순간</b> 나머지 숫자는 가려집니다!</div>
+        <div class="ready-hint">4개부터 시작 · 성공할 때마다 1개씩 늘어남 · 기회 3번 · 점수 = 성공한 최대 개수</div>
+        <button class="btn-play" id="s">시작하기</button>
+      </div>`;
+    container.querySelector('#s').onclick=start;
+  }
+  function start(){level=4;best=0;lives=3;ended=false;round();}
+  function setMsg(m){const st=container.querySelector('#st');if(st)st.textContent=m;}
+  function round(){
+    const cells=Array.from({length:N},(_,i)=>i);
+    for(let i=N-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cells[i],cells[j]]=[cells[j],cells[i]];}
+    pos={};for(let n=1;n<=level;n++)pos[cells[n-1]]=n;
+    next=1;locked=false;
+    container.innerHTML=`
+      <div class="stat-bar">
+        <div class="stat-pill"><div class="stat-pill-label">COUNT</div><div class="stat-pill-val">${level}</div></div>
+        <div class="stat-pill"><div class="stat-pill-label">LIVES</div><div class="stat-pill-val" style="font-size:20px">${'❤️'.repeat(lives)}${'🤍'.repeat(3-lives)}</div></div>
+      </div>
+      <div class="chimp-grid" id="grid"></div>
+      <div class="sp-status" id="st">1부터 순서대로!</div>`;
+    const g=container.querySelector('#grid');
+    for(let i=0;i<N;i++){
+      const c=document.createElement('button');
+      if(pos[i]){c.className='chimp-cell num';c.textContent=pos[i];c.onclick=()=>tap(i,c);}
+      else{c.className='chimp-cell empty';c.disabled=true;}
+      g.appendChild(c);
+    }
+  }
+  function tap(i,btn){
+    if(locked||ended)return;
+    const n=pos[i];if(!n)return;
+    if(n===next){
+      btn.classList.add('done');btn.disabled=true;
+      if(next===1)container.querySelectorAll('.chimp-cell.num').forEach(c=>{if(!c.classList.contains('done'))c.classList.add('hide');});
+      next++;
+      if(next>level){
+        best=level;prog(best);locked=true;
+        if(level>=N){setMsg('완벽! 25개 전부 성공');to=setTimeout(()=>{if(!ended){ended=true;onDone(best);}},900);return;}
+        setMsg('성공! '+(level+1)+'개로 →');level++;to=setTimeout(round,700);
+      }
+    }else{
+      btn.classList.add('no');locked=true;lives--;
+      container.querySelectorAll('.chimp-cell.num').forEach(c=>c.classList.remove('hide'));
+      if(lives<=0){setMsg('끝! 기록 '+best+'개');to=setTimeout(()=>{if(!ended){ended=true;onDone(best);}},1100);}
+      else{setMsg('틀렸어요! 남은 기회 '+lives+'번');to=setTimeout(round,1200);}
+    }
+  }
+  renderReady();
+  return()=>{ended=true;clearTimeout(to);};
+}
+
+/* ═══════════════════════════════════
+   9) 점 개수 비교
+═══════════════════════════════════ */
+function startDots(container,onDone){
+  let time=30,score=0,tid=null,ended=false,cur=null;
+  function makeQ(){
+    const a=6+Math.floor(Math.random()*(10+Math.min(score,20)));
+    const ratio=Math.max(0.07,0.5-score*0.03);
+    const more=a+Math.max(1,Math.round(a*ratio));
+    const leftMore=Math.random()<0.5;
+    cur={L:leftMore?more:a,R:leftMore?a:more};
+  }
+  function dotsSvg(n){
+    const r=n>30?3.6:n>18?4.4:5.2, pts=[];
+    for(let k=0;k<n;k++){
+      let x,y,tries=0,ok=false;
+      while(!ok&&tries++<250){
+        x=r+2+Math.random()*(100-2*r-4);y=r+2+Math.random()*(125-2*r-4);
+        ok=pts.every(p=>(p[0]-x)*(p[0]-x)+(p[1]-y)*(p[1]-y)>(2*r+1.5)*(2*r+1.5));
+      }
+      pts.push([x,y]);
+    }
+    return `<svg class="dots-svg" viewBox="0 0 100 125">${pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${r}" fill="#2563EB"/>`).join('')}</svg>`;
+  }
+  function renderReady(){
+    container.innerHTML=`
+      <div class="ready-card">
+        <div class="ready-title">점 개수 비교</div>
+        <div class="ready-desc">두 칸 중 <b>점이 더 많은 쪽</b>을 세지 말고 직감으로 빠르게 탭하세요.</div>
+        <div class="ready-hint">30초 · 정답 +1점 · 오답 -1점 · 점수 오를수록 차이가 작아짐</div>
+        <button class="btn-play" id="s">시작하기</button>
+      </div>`;
+    container.querySelector('#s').onclick=play;
+  }
+  function play(){
+    score=0;time=30;makeQ();
+    container.innerHTML=`
+      <div class="stat-bar">
+        <div class="stat-pill"><div class="stat-pill-label">TIME</div><div class="stat-pill-val" id="t">${time}s</div></div>
+        <div class="stat-pill"><div class="stat-pill-label">SCORE</div><div class="stat-pill-val blue" id="sc">${score}</div></div>
+      </div>
+      <div class="dots-row">
+        <button class="dots-box" id="L"></button>
+        <button class="dots-box" id="R"></button>
+      </div>
+      <div class="sp-status">점이 더 많은 쪽을 탭!</div>`;
+    container.querySelector('#L').onclick=()=>pick('L');
+    container.querySelector('#R').onclick=()=>pick('R');
+    draw();
+    tid=setInterval(()=>{time--;if(time<=0){clearInterval(tid);if(!ended){ended=true;onDone(score);}}else updBar();},1000);
+  }
+  function draw(){
+    const L=container.querySelector('#L'),R=container.querySelector('#R');
+    if(L)L.innerHTML=dotsSvg(cur.L);if(R)R.innerHTML=dotsSvg(cur.R);
+  }
+  function updBar(){const t=container.querySelector('#t'),sc=container.querySelector('#sc');if(t){t.textContent=time+'s';t.classList.toggle('warn',time<=5);}if(sc)sc.textContent=score;}
+  function pick(side){
+    if(ended||!cur)return;
+    const right=cur.L>cur.R?'L':'R', box=container.querySelector('#'+side);
+    if(side===right){score++;box.classList.add('ok');}else{score=Math.max(0,score-1);box.classList.add('no');}
+    setTimeout(()=>box&&box.classList.remove('ok','no'),150);
+    makeQ();draw();updBar();prog(score);
+  }
+  renderReady();
+  return()=>{clearInterval(tid);ended=true;};
+}
+
+/* ═══════════════════════════════════
+   10) 번개 참/거짓
+═══════════════════════════════════ */
+function startTF(container,onDone){
+  let time=30,score=0,tid=null,ended=false,q=null;
+  function makeQ(){
+    let a,b,op,ans; const r=Math.random();
+    if(score<5){
+      op=Math.random()<0.5?'+':'-';a=2+Math.floor(Math.random()*9);b=2+Math.floor(Math.random()*9);
+      if(op==='-'&&b>a){const t=a;a=b;b=t;}
+      ans=op==='+'?a+b:a-b;
+    }else if(score<12){
+      if(r<0.4){op='+';a=5+Math.floor(Math.random()*16);b=5+Math.floor(Math.random()*16);ans=a+b;}
+      else if(r<0.7){op='-';a=12+Math.floor(Math.random()*20);b=2+Math.floor(Math.random()*10);ans=a-b;}
+      else{op='×';a=2+Math.floor(Math.random()*8);b=2+Math.floor(Math.random()*8);ans=a*b;}
+    }else{
+      if(r<0.35){op='+';a=15+Math.floor(Math.random()*35);b=15+Math.floor(Math.random()*35);ans=a+b;}
+      else if(r<0.6){op='-';a=25+Math.floor(Math.random()*40);b=5+Math.floor(Math.random()*18);ans=a-b;}
+      else{op='×';a=3+Math.floor(Math.random()*11);b=3+Math.floor(Math.random()*11);ans=a*b;}
+    }
+    const truth=Math.random()<0.5;
+    let shown=ans;
+    if(!truth){
+      const offs=[-10,-2,-1,1,2,10];
+      do{shown=ans+offs[Math.floor(Math.random()*offs.length)];}while(shown<0||shown===ans);
+    }
+    q={text:`${a} ${op} ${b} = ${shown}`,truth};
+  }
+  function renderReady(){
+    container.innerHTML=`
+      <div class="ready-card">
+        <div class="ready-title">번개 참/거짓</div>
+        <div class="ready-desc">계산식이 <b>맞으면 ⭕</b>, <b>틀리면 ❌</b>를 즉시 누르세요.</div>
+        <div class="ready-hint">30초 · 정답 +1점 · 오답 -1점 · 점수 오를수록 어려워짐</div>
+        <button class="btn-play" id="s">시작하기</button>
+      </div>`;
+    container.querySelector('#s').onclick=play;
+  }
+  function play(){
+    score=0;time=30;makeQ();
+    container.innerHTML=`
+      <div class="stat-bar">
+        <div class="stat-pill"><div class="stat-pill-label">TIME</div><div class="stat-pill-val" id="t">${time}s</div></div>
+        <div class="stat-pill"><div class="stat-pill-label">SCORE</div><div class="stat-pill-val blue" id="sc">${score}</div></div>
+      </div>
+      <div class="stroop-stage" id="stage"><span class="tf-q" id="q"></span></div>
+      <div class="tf-grid">
+        <button class="tf-btn o" id="o">⭕ 맞다</button>
+        <button class="tf-btn x" id="x">❌ 틀리다</button>
+      </div>`;
+    container.querySelector('#o').onclick=()=>pick(true);
+    container.querySelector('#x').onclick=()=>pick(false);
+    render();
+    tid=setInterval(()=>{time--;if(time<=0){clearInterval(tid);if(!ended){ended=true;onDone(score);}}else updBar();},1000);
+  }
+  function render(){const e=container.querySelector('#q');if(e)e.textContent=q.text;}
+  function updBar(){const t=container.querySelector('#t'),sc=container.querySelector('#sc');if(t){t.textContent=time+'s';t.classList.toggle('warn',time<=5);}if(sc)sc.textContent=score;}
+  function pick(v){
+    if(ended)return;const st=container.querySelector('#stage');
+    if(v===q.truth){score++;if(st){st.classList.remove('no');st.classList.add('ok');}}
+    else{score=Math.max(0,score-1);if(st){st.classList.remove('ok');st.classList.add('no');}}
+    setTimeout(()=>st&&st.classList.remove('ok','no'),130);
+    makeQ();render();updBar();prog(score);
+  }
+  renderReady();
+  return()=>{clearInterval(tid);ended=true;};
+}
+
+/* ═══════════════════════════════════
+   친구와 대전 (방 코드 · 동시 시작 · 실시간 점수)
+   Firestore rooms/{code} = { game, hostUid, status:'waiting'|'playing'|'closed', round,
+                              players:{ uid:{nick, live, score, done, joinedAt} } }
+═══════════════════════════════════ */
+function hasRoom(){ return !!(window.FBWEB && window.FBWEB.roomCreate); }
+
+function renderBattle(opts={}){
+  const nick=getNick(), AG=activeGames();
+  let sel=AG[0].id;
+  const s=document.createElement('div'); s.className='screen';
+  s.innerHTML=`
+    <div class="top-bar">
+      <button class="back-btn" id="bk">뒤로</button>
+      <span class="top-title">BATTLE</span>
+      <div class="top-nick">${nick}</div>
+    </div>
+    <div class="bt-hero">
+      <div class="bt-hero-t">👥 친구와 대전</div>
+      <div class="bt-hero-s">방을 만들고 코드를 친구에게 알려주세요.<br>같은 게임을 동시에 시작해서 실시간으로 점수를 겨뤄요. (최대 4명)</div>
+    </div>
+    <div class="bt-sec">방 만들기 · 게임 선택</div>
+    <div class="bt-games" id="btGames"></div>
+    <button class="btn-play" id="btCreate" style="margin-top:12px">방 만들기</button>
+    <div class="bt-sec" style="margin-top:28px">코드로 입장</div>
+    <div class="bt-join">
+      <input class="nick-input bt-code-in" id="btCode" type="text" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off">
+      <button class="btn-action btn-solid" id="btJoin">입장</button>
+    </div>
+    <div class="login-err" id="btErr"></div>`;
+  app.appendChild(s);
+  s.querySelector('#bk').onclick=()=>go('home');
+  const gw=s.querySelector('#btGames'), err=s.querySelector('#btErr'), codeIn=s.querySelector('#btCode');
+  const cBtn=s.querySelector('#btCreate'), jBtn=s.querySelector('#btJoin');
+  function drawGames(){
+    gw.innerHTML=AG.map(g=>`<button class="bt-game ${g.id===sel?'sel':''}" data-id="${g.id}">${g.icon} ${g.name}</button>`).join('');
+    gw.querySelectorAll('.bt-game').forEach(b=>b.onclick=()=>{sel=b.dataset.id;drawGames();});
+  }
+  drawGames();
+  if(!hasRoom()) err.textContent='서버에 연결되지 않아 대전을 사용할 수 없어요';
+  cBtn.onclick=()=>{
+    if(!hasRoom()) return;
+    cBtn.disabled=true; cBtn.textContent='방 만드는 중...'; err.textContent='';
+    window.FBWEB.roomCreate(nick, sel).then(code=>{
+      if(code){ go('room',{code}); return; }
+      cBtn.disabled=false; cBtn.textContent='방 만들기';
+      err.textContent='방을 만들지 못했어요 · Firestore 규칙 게시 여부를 확인하세요';
+    });
+  };
+  function join(){
+    const code=codeIn.value.trim();
+    if(!/^\d{4}$/.test(code)){ err.textContent='4자리 숫자 코드를 입력하세요'; return; }
+    if(!hasRoom()) return;
+    jBtn.disabled=true; err.textContent='입장 중...';
+    window.FBWEB.roomJoin(code, nick).then(r=>{
+      jBtn.disabled=false;
+      if(r==='ok'){ go('room',{code}); return; }
+      err.textContent = r==='notfound' ? '없는 방이에요 · 코드를 확인하세요'
+                      : r==='full'     ? '방이 꽉 찼어요 (최대 4명)'
+                      : r==='started'  ? '이미 게임 중이에요 · 이번 판이 끝나면 다시 시도하세요'
+                      : '연결 오류 · 다시 시도해주세요';
+    });
+  }
+  jBtn.onclick=join;
+  codeIn.addEventListener('keydown',e=>{ if(e.key==='Enter') join(); });
+  codeIn.addEventListener('input',()=>{ codeIn.value=codeIn.value.replace(/\D/g,'').slice(0,4); err.textContent=''; });
+  if(opts.code){ codeIn.value=opts.code; join(); }
+}
+
+function renderRoom({code}){
+  const nick=getNick(), FB=window.FBWEB, me=FB.roomMe();
+  let room=null, phase='lobby', playedRound=0, gameCleanup=null, timers=[], myScore=null, gone=false;
+  let liveT=null, liveLast=0, livePending='';
+  const s=document.createElement('div'); s.className='screen';
+  s.innerHTML=`
+    <div class="top-bar">
+      <button class="back-btn" id="bk">나가기</button>
+      <span class="top-title">ROOM ${code}</span>
+      <div class="top-nick">${nick}</div>
+    </div>
+    <div id="rBoard" class="rb-board" style="display:none"></div>
+    <div id="rBody" style="flex:1;display:flex;flex-direction:column"></div>`;
+  app.appendChild(s);
+  const board=s.querySelector('#rBoard'), body=s.querySelector('#rBody');
+  body.innerHTML='<div class="bt-center"><div class="bt-msg">방에 연결 중...</div></div>';
+
+  const meta=()=>GAMES.find(g=>g.id===(room&&room.game))||GAMES[0];
+  const isHost=()=>!!room && room.hostUid===me;
+  const plist=()=>Object.entries((room&&room.players)||{}).map(([id,p])=>Object.assign({id},p)).sort((a,b)=>(a.joinedAt||0)-(b.joinedAt||0));
+
+  s.querySelector('#bk').onclick=()=>{
+    if(gone){ go('battle'); return; }
+    showConfirm('방에서 나갈까요?', isHost()?'방장이 나가면 방이 닫혀요.':'코드로 다시 들어올 수 있어요 (게임 중이 아닐 때).', ()=>go('battle'));
+  };
+
+  function stopGame(){
+    if(gameCleanup){ try{ gameCleanup(); }catch(e){} gameCleanup=null; }
+    timers.forEach(clearTimeout); timers=[];
+    PROGRESS=null; clearTimeout(liveT); liveT=null;
+  }
+  function sendLive(v){
+    livePending=String(v);
+    if(liveT) return;
+    liveT=setTimeout(()=>{ liveT=null; liveLast=Date.now(); FB.roomUpdate(code,{[`players.${me}.live`]:livePending}); }, Math.max(0,350-(Date.now()-liveLast)));
+  }
+  function startGame(){
+    const upd={ status:'playing', round:(room.round||0)+1, startedAt:Date.now() };
+    plist().forEach(p=>{ upd[`players.${p.id}.score`]=null; upd[`players.${p.id}.done`]=false; upd[`players.${p.id}.live`]=''; });
+    FB.roomUpdate(code, upd);
+  }
+
+  function drawBoard(){
+    if(phase==='lobby' || !room){ board.style.display='none'; return; }
+    board.style.display='';
+    const m=meta();
+    board.innerHTML=plist().map(p=>`
+      <div class="rb-p ${p.id===me?'me':''} ${p.done?'done':''}">
+        <div class="rb-nick">${p.id===room.hostUid?'👑 ':''}${p.nick}${p.id===me?' (나)':''}</div>
+        <div class="rb-live">${p.done?`${p.score}<small style="font-size:11px">${m.unit}</small> ✓`:(p.live?p.live:'…')}</div>
+      </div>`).join('');
+  }
+
+  function drawLobby(){
+    const m=meta(), ps=plist(), host=isHost();
+    const share=/^https?:$/.test(location.protocol) ? `<button class="bt-link" id="lk">🔗 초대 링크 복사</button>` : '';
+    const slots=[0,1,2,3].map(i=>{
+      const p=ps[i];
+      return p ? `<div class="bt-pl ${p.id===me?'me':''}">${p.id===room.hostUid?'👑':'🙂'} ${p.nick}${p.id===me?' (나)':''}</div>`
+               : `<div class="bt-pl empty">빈 자리</div>`;
+    }).join('');
+    body.innerHTML=`
+      <div class="bt-codebox">
+        <div class="bt-code-l">방 코드</div>
+        <div class="bt-code">${code}</div>
+        <div class="bt-code-s">친구에게 이 코드를 알려주세요</div>
+        ${share}
+      </div>
+      <div class="bt-sec">게임${host?' · 눌러서 바꾸기':''}</div>
+      ${host ? `<div class="bt-games" id="gsel">${activeGames().map(g=>`<button class="bt-game ${g.id===m.id?'sel':''}" data-id="${g.id}">${g.icon} ${g.name}</button>`).join('')}</div>`
+             : `<div class="bt-cur">${m.icon} <b>${m.name}</b> · ${m.desc}</div>`}
+      <div class="bt-sec" style="margin-top:18px">참가자 ${ps.length}/4</div>
+      <div class="bt-pls">${slots}</div>
+      ${host ? `<button class="btn-play" id="goBtn" ${ps.length<2?'disabled':''}>${ps.length<2?'친구를 기다리는 중...':'▶ 다같이 시작'}</button>`
+             : `<div class="bt-wait">방장이 시작하기를 기다리는 중...</div>`}`;
+    if(host){
+      body.querySelectorAll('#gsel .bt-game').forEach(b=>b.onclick=()=>FB.roomUpdate(code,{game:b.dataset.id}));
+      body.querySelector('#goBtn').onclick=startGame;
+    }
+    const lk=body.querySelector('#lk');
+    if(lk) lk.onclick=()=>{
+      const link=location.origin+location.pathname+'?room='+code;
+      const fallback=()=>showConfirm('초대 링크', link, null);
+      try{ navigator.clipboard.writeText(link).then(()=>{ lk.textContent='✓ 복사됨'; },fallback); }catch(e){ fallback(); }
+    };
+  }
+
+  function startRound(){
+    stopGame();
+    playedRound=room.round; phase='countdown'; myScore=null;
+    const m=meta(); let n=3;
+    const tick=()=>{
+      if(gone) return;
+      if(n>0){
+        body.innerHTML=`<div class="bt-center"><div class="bt-cd-game">${m.icon} ${m.name}</div><div class="bt-cd">${n}</div><div class="bt-msg">${m.desc}</div></div>`;
+        n--; timers.push(setTimeout(tick,900));
+      } else run();
+    };
+    tick();
+  }
+  function run(){
+    phase='playing';
+    const m=meta();
+    body.innerHTML='<div id="gb" style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:32px"></div>';
+    const gb=body.querySelector('#gb');
+    PROGRESS=sendLive;
+    gameCleanup=GAME_FNS[m.id](gb,(score)=>{
+      if(phase!=='playing') return;
+      phase='finished'; myScore=score; PROGRESS=null; clearTimeout(liveT); liveT=null;
+      FB.roomUpdate(code,{[`players.${me}.score`]:score,[`players.${me}.done`]:true,[`players.${me}.live`]:String(score)});
+      Promise.resolve(submitScore(m.id,nick,score)).catch(()=>{}); // 개인 랭킹에도 기록
+      drawAfter();
+    });
+    const sb=gb.querySelector('#s'); if(sb) sb.click(); // 준비 카드 건너뛰고 바로 시작
+    drawBoard();
+  }
+
+  function drawAfter(){
+    const m=meta(), ps=plist();
+    if(!ps.every(p=>p.done)){
+      body.innerHTML=`<div class="bt-center">
+        <div class="bt-cd-game">${m.icon} ${m.name} · 내 기록</div>
+        <div class="bt-my">${myScore!=null?myScore:'-'}<span>${m.unit}</span></div>
+        <div class="bt-msg">친구가 끝나길 기다리는 중...</div>
+      </div>`;
+      return;
+    }
+    phase='result';
+    const sorted=ps.slice().sort((a,b)=> m.best==='high' ? b.score-a.score : a.score-b.score);
+    const top=sorted[0].score, winners=sorted.filter(p=>p.score===top), iWin=winners.some(p=>p.id===me);
+    let head;
+    if(ps.length>1 && winners.length===ps.length) head='🤝 무승부!';
+    else if(iWin) head = winners.length>1 ? '🎉 공동 우승!' : '🎉 내가 이겼다!';
+    else head=`🏆 ${winners.map(p=>p.nick).join(', ')} 승리!`;
+    const medal=['🥇','🥈','🥉','4위'];
+    const rows=sorted.map(p=>{
+      const rank=sorted.filter(q=> m.best==='high' ? q.score>p.score : q.score<p.score).length;
+      return `<div class="lb-row ${p.id===me?'me':''}">
+        <span class="lb-rank">${medal[rank]||(rank+1)+'위'}</span>
+        <span class="lb-name">${p.id===me?`<b>${p.nick} ★</b>`:p.nick}</span>
+        <span class="lb-val">${p.score}${m.unit}</span>
+      </div>`;
+    }).join('');
+    body.innerHTML=`
+      <div class="rank-hero" style="margin-top:8px">
+        <div class="rank-hero-main">${head}</div>
+        <div class="rank-hero-sub">${m.icon} ${m.name} · ${m.best==='high'?'높을수록':'낮을수록'} 승리</div>
+      </div>
+      <div class="lb-panel">
+        <div class="lb-panel-header"><span class="lb-panel-title">BATTLE RESULT</span><span class="lb-panel-game">ROOM ${code}</span></div>
+        ${rows}
+      </div>
+      ${isHost() ? `<div class="result-actions">
+          <button class="btn-action btn-ghost" id="lobbyBtn">게임 바꾸기</button>
+          <button class="btn-action btn-solid" id="againBtn">한 판 더</button>
+        </div>`
+        : `<div class="bt-wait">방장이 다음 판을 준비 중...</div>`}`;
+    if(isHost()){
+      body.querySelector('#lobbyBtn').onclick=()=>FB.roomUpdate(code,{status:'waiting'});
+      body.querySelector('#againBtn').onclick=startGame;
+    }
+  }
+
+  function onRoom(r){
+    if(gone) return;
+    if(!r || r.status==='closed' || !(r.players||{})[me]){
+      gone=true; stopGame(); board.style.display='none';
+      body.innerHTML=`<div class="bt-center">
+        <div class="bt-big">🚪</div>
+        <div class="bt-msg">${!r||r.status==='closed'?'방이 닫혔어요':'방에서 나왔어요'}</div>
+        <button class="btn-play" id="bb" style="max-width:280px">대전 화면으로</button>
+      </div>`;
+      body.querySelector('#bb').onclick=()=>go('battle');
+      return;
+    }
+    room=r;
+    if(r.status==='waiting'){
+      if(phase!=='lobby'){ stopGame(); phase='lobby'; }
+      drawBoard(); drawLobby(); return;
+    }
+    if(r.status==='playing'){
+      if(r.round!==playedRound && phase!=='countdown' && phase!=='playing') startRound();
+      drawBoard();
+      if(phase==='finished' || phase==='result') drawAfter();
+    }
+  }
+
+  const unsub=FB.roomWatch(code,onRoom);
+  cleanup=()=>{ unsub(); stopGame(); if(!gone) FB.roomLeave(code, isHost()); };
+}
+
+/* 초대 링크 ?room=1234 기억 (로그인 후 입장) */
+try{ const _rq=new URLSearchParams(location.search).get('room'); if(_rq && /^\d{4}$/.test(_rq)) sessionStorage.setItem('bt_pending_room', _rq); }catch(e){}
+
 /* 시작 */
 (window.__fbReady?window.__fbReady:Promise.resolve()).then(function(){return loadGameConfig();}).then(function(){go('home');});
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, doc, getDoc, setDoc, addDoc, getDocs, query, orderBy, limit, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, doc, getDoc, setDoc, addDoc, getDocs, query, orderBy, limit, deleteDoc, serverTimestamp, updateDoc, onSnapshot, runTransaction, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCI6lyyL_FW6C_RrdHcmHVIHoARmrEgOxU",
@@ -1720,9 +2316,67 @@ async function resetLeaderboard(gameId, allIds){
   }catch(e){ console.warn("reset 실패", e); return "error"; }
 }
 
-async function getConfig(){ try{ await readyPromise; if(!ready) return null; const s=await getDoc(doc(db,"config","games")); return s.exists() && Array.isArray(s.data().disabled) ? s.data().disabled : []; }catch(e){ return null; } }
-async function setConfig(arr){ try{ await readyPromise; if(!ready) return "error"; await setDoc(doc(db,"config","games"), { disabled: arr }); return "ok"; }catch(e){ return "error"; } }
-window.FBWEB = { loginOrRegister, getLeaderboard, submitScore, resetLeaderboard, getConfig, setConfig };
+/* ── 친구와 대전: 방(rooms/{code}) ── */
+function roomMe(){ return auth && auth.currentUser ? auth.currentUser.uid : null; }
+function newPlayer(nick){ return { nick: nick, live: "", score: null, done: false, joinedAt: Date.now() }; }
+const ROOM_TTL = 6*3600*1000; // 6시간 지난 방은 만료 취급
+async function roomCreate(nick, game){
+  try{
+    await readyPromise; if(!ready) return null;
+    const me = roomMe();
+    for(let i=0;i<10;i++){
+      const code = String(1000 + Math.floor(Math.random()*9000));
+      const ref = doc(db, "rooms", code);
+      const s = await getDoc(ref);
+      if(s.exists()){ const d=s.data(); if(d.status!=="closed" && Date.now()-(d.ts||0) < ROOM_TTL) continue; }
+      await setDoc(ref, { code: code, game: game, hostUid: me, status: "waiting", round: 0, ts: Date.now(), players: { [me]: newPlayer(nick) } });
+      return code;
+    }
+    return null;
+  }catch(e){ console.warn("room create 실패", e); return null; }
+}
+async function roomJoin(code, nick){
+  try{
+    await readyPromise; if(!ready) return "error";
+    const me = roomMe(), ref = doc(db, "rooms", code);
+    return await runTransaction(db, async (tx)=>{
+      const s = await tx.get(ref);
+      if(!s.exists()) return "notfound";
+      const r = s.data(), players = r.players || {};
+      if(r.status==="closed" || Date.now()-(r.ts||0) > ROOM_TTL) return "notfound";
+      if(players[me]) return "ok";
+      if(r.status!=="waiting") return "started";
+      if(Object.keys(players).length >= 4) return "full";
+      tx.update(ref, { ["players."+me]: newPlayer(nick) });
+      return "ok";
+    });
+  }catch(e){ console.warn("room join 실패", e); return "error"; }
+}
+function roomWatch(code, cb){
+  let un = null, stop = false;
+  readyPromise.then(()=>{
+    if(stop) return;
+    if(!ready){ cb(null); return; }
+    un = onSnapshot(doc(db, "rooms", code), (s)=>cb(s.exists() ? s.data() : null), (e)=>console.warn("room watch 실패", e));
+  });
+  return ()=>{ stop = true; if(un) un(); };
+}
+async function roomUpdate(code, data){
+  try{ await readyPromise; if(!ready) return "error"; await updateDoc(doc(db, "rooms", code), data); return "ok"; }
+  catch(e){ console.warn("room update 실패", e); return "error"; }
+}
+async function roomLeave(code, isHost){
+  try{
+    await readyPromise; if(!ready) return;
+    const ref = doc(db, "rooms", code);
+    if(isHost) await updateDoc(ref, { status: "closed" });
+    else await updateDoc(ref, { ["players."+roomMe()]: deleteField() });
+  }catch(e){ console.warn("room leave 실패", e); }
+}
+
+async function getConfig(){ try{ await readyPromise; if(!ready) return null; const s=await getDoc(doc(db,"config","games")); return s.exists() ? s.data() : {}; }catch(e){ return null; } }
+async function setConfig(cfg){ try{ await readyPromise; if(!ready) return "error"; await setDoc(doc(db,"config","games"), cfg); return "ok"; }catch(e){ return "error"; } }
+window.FBWEB = { loginOrRegister, getLeaderboard, submitScore, resetLeaderboard, getConfig, setConfig, roomCreate, roomJoin, roomWatch, roomUpdate, roomLeave, roomMe };
 if(window.__fbReadyResolve){ window.__fbReadyResolve(true); window.__fbReadyResolve = null; }
 </script>
 </body>

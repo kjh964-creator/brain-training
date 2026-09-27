@@ -16,10 +16,16 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // 게임 표시 ON/OFF 설정 (관리자가 켜고 끔)
+    // 홈에 올릴 게임 선정 (관리자가 최대 5개 선택)
     match /config/{doc} {
       allow read: if true;
       allow write: if request.auth != null;
+    }
+
+    // 친구와 대전 방 (방 코드 4자리)
+    match /rooms/{code} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
     }
   }
 }
