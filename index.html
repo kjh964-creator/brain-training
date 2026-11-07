@@ -542,6 +542,38 @@ button { touch-action: manipulation; cursor: pointer; border: none; font-family:
 .pair-card.open::after, .pair-card.done::after { content:''; }
 .pair-card.open .pair-f, .pair-card.done .pair-f { opacity:1; }
 .pair-card.done { background:var(--green-light); border-color:var(--green); transform:scale(0.95); opacity:0.75; }
+
+/* ── 넓은 화면(PC 웹): 홈을 한눈에 펼쳐 보기 ── */
+@media (min-width: 900px){
+  #app:has(.home-screen){ max-width:1240px; padding:0 32px 24px; }
+  .home-screen{ display:grid; grid-template-columns:330px 1fr; column-gap:36px; align-content:start; }
+  .home-screen > .top-bar, .home-screen > .home-footer{ grid-column:1 / -1; }
+  .home-screen > .home-header{ grid-column:1; padding-top:28px; }
+  .home-screen > .home-side{ grid-column:1; }
+  .home-screen > .game-list{ grid-column:2; grid-row:2 / span 2; padding-top:28px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:14px; align-content:start; }
+  .home-screen .home-title{ font-size:44px; }
+  .home-screen .game-item{ flex-direction:column; align-items:flex-start; gap:12px; padding:20px; min-height:190px; }
+  .home-screen .game-icon{ width:58px; height:58px; font-size:28px; }
+  .home-screen .game-name{ font-size:21px; }
+  .home-screen .game-desc{ font-size:13.5px; }
+  .home-screen .game-king-r{ text-align:left; max-width:none; margin-top:auto; width:100%; border-top:1px dashed var(--border); padding-top:10px; }
+  .home-screen .home-footer{ padding-top:24px; }
+  .home-screen{ grid-template-rows:auto auto 1fr auto; }
+  .home-screen > .home-side{ align-self:start; }
+  .home-screen > .game-list{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+  .home-screen .game-item{ min-height:0; padding:16px; gap:8px; }
+  .home-screen .game-icon{ width:46px; height:46px; font-size:23px; }
+  .home-screen .game-king-r{ padding-top:6px; }
+  @media (max-width:1250px){ .home-screen > .game-list{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+  @media (max-height:820px){
+    .home-screen .game-item{ padding:12px 14px; gap:5px; }
+    .home-screen .game-num{ display:none; }
+    .home-screen .game-icon{ width:40px; height:40px; font-size:20px; }
+    .home-screen > .game-list, .home-screen > .home-header{ padding-top:14px; }
+    .home-screen .home-footer{ padding-top:10px; }
+  }
+}
 </style>
 <script>
   window.__fbReady = new Promise(function(r){ window.__fbReadyResolve = r; });
@@ -1149,7 +1181,7 @@ function renderHome(){
   let pending=null; try{ pending=sessionStorage.getItem('bt_pending_room'); }catch(e){}
   if(pending){ try{ sessionStorage.removeItem('bt_pending_room'); }catch(e){} go('battle',{code:pending}); return; }
   const nick=getNick(), ts=getTotalScore(), bdg=calcBadge(ts);
-  const s=document.createElement('div'); s.className='screen';
+  const s=document.createElement('div'); s.className='screen home-screen';
   s.innerHTML=`
     <div class="top-bar">
       <div style="font-family:'Bricolage Grotesque','Noto Sans KR',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.02em">BRAIN</div>
@@ -1167,6 +1199,7 @@ function renderHome(){
         <span class="badge ${bdg.cls}">${bdg.label}</span>
       </div>
     </div>
+    <div class="home-side">
     <button class="home-rank-btn" id="rankBtn">
       <span class="home-rank-icon">🏆</span>
       <span class="home-rank-text">
@@ -1183,6 +1216,7 @@ function renderHome(){
       </span>
       <span class="home-rank-arrow">→</span>
     </button>
+    </div>
     <div class="game-list" id="gList"></div>
     <div class="home-footer">기록은 자동 저장됩니다</div>`;
   app.appendChild(s);
