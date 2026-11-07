@@ -466,7 +466,7 @@ button { touch-action: manipulation; cursor: pointer; border: none; font-family:
 .adm-count { font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700; color:var(--blue); }
 .adm-count.full { color:var(--green); }
 .adm-sub { font-size:12px; color:var(--muted); margin:0 2px 12px; line-height:1.5; }
-.adm-slots { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin-bottom:16px; }
+.adm-slots { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin-bottom:16px; }
 .adm-slot { aspect-ratio:1/1; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; background:var(--green-light); border:2px solid var(--green); }
 .adm-slot.empty { background:transparent; border:2px dashed var(--border); color:var(--muted); font-size:12px; }
 .adm-list { display:flex; flex-direction:column; gap:8px; margin-bottom:22px; }
@@ -580,16 +580,16 @@ const ADMIN_NICK = '김진호';
 const ADMIN_PIN  = '8199';
 function isAdmin(){ return getNick()===ADMIN_NICK && getPin()===ADMIN_PIN; }
 
-/* ── 홈에 올릴 게임 선택 (관리자가 최대 5개 선정; Firebase로 모든 사용자 공유) ──
+/* ── 홈에 올릴 게임 선택 (관리자가 개수 제한 없이 선정; Firebase로 모든 사용자 공유) ──
    config/games = { enabled:[...], disabled:[...] }  (disabled는 예전 버전 앱 호환용) */
-const MAX_ACTIVE = 5;
-function normEnabled(arr){ const ids=GAMES.map(g=>g.id); return (arr||[]).filter(id=>ids.includes(id)).slice(0,MAX_ACTIVE); }
-function defaultEnabled(disabled){ return GAMES.filter(g=>!(disabled||[]).includes(g.id)).slice(0,MAX_ACTIVE).map(g=>g.id); }
+const DEFAULT_ACTIVE = 5; // 설정이 없을 때 처음 보이는 개수 (선정 개수 제한은 없음)
+function normEnabled(arr){ const ids=GAMES.map(g=>g.id); return (arr||[]).filter(id=>ids.includes(id)); }
+function defaultEnabled(disabled){ return GAMES.filter(g=>!(disabled||[]).includes(g.id)).slice(0,DEFAULT_ACTIVE).map(g=>g.id); }
 let ENABLED = (function(){
   try{ const r=JSON.parse(localStorage.getItem('bt_enabled')||'null'); if(Array.isArray(r) && normEnabled(r).length) return new Set(normEnabled(r)); }catch(e){}
   return new Set(defaultEnabled());
 })();
-function activeGames(){ const a=GAMES.filter(g=>ENABLED.has(g.id)); return a.length?a:GAMES.slice(0,MAX_ACTIVE); }
+function activeGames(){ const a=GAMES.filter(g=>ENABLED.has(g.id)); return a.length?a:GAMES.slice(0,DEFAULT_ACTIVE); }
 function applyEnabled(arr){
   const n=normEnabled(arr);
   ENABLED=new Set(n.length?n:defaultEnabled());
@@ -865,7 +865,7 @@ function renderAdmin(){
       <div class="adm-title">홈에 올릴 게임</div>
       <div class="adm-count" id="admCnt"></div>
     </div>
-    <div class="adm-sub">게임을 탭해서 넣기/빼기 · 최대 ${MAX_ACTIVE}개<br>저장 즉시 모든 사용자(앱·웹) 홈에 반영됩니다 · 🗑️ = 그 게임 랭킹 초기화</div>
+    <div class="adm-sub">게임을 탭해서 넣기/빼기 · 개수 제한 없음<br>저장 즉시 모든 사용자(앱·웹) 홈에 반영됩니다 · 🗑️ = 그 게임 랭킹 초기화</div>
     <div class="adm-slots" id="admSlots"></div>
     <div class="adm-list" id="admList"></div>
     <div class="adm-sec">전체 관리</div>
@@ -878,9 +878,9 @@ function renderAdmin(){
 
   function draw(){
     const on=GAMES.filter(g=>ENABLED.has(g.id));
-    cnt.textContent=`${on.length} / ${MAX_ACTIVE}`;
-    cnt.classList.toggle('full', on.length===MAX_ACTIVE);
-    slots.innerHTML=Array.from({length:MAX_ACTIVE},(_,i)=> on[i]
+    cnt.textContent=`${on.length} / ${GAMES.length}`;
+    cnt.classList.toggle('full', on.length===GAMES.length);
+    slots.innerHTML=Array.from({length:GAMES.length},(_,i)=> on[i]
       ? `<div class="adm-slot" title="${on[i].name}">${on[i].icon}</div>`
       : `<div class="adm-slot empty">빈칸</div>`).join('');
     list.innerHTML=GAMES.map(g=>{
@@ -903,7 +903,6 @@ function renderAdmin(){
       if(next.size<=1){ showToast('최소 1개는 남겨야 해요'); return; }
       next.delete(id);
     } else {
-      if(next.size>=MAX_ACTIVE){ showToast(`최대 ${MAX_ACTIVE}개예요 · 먼저 하나를 빼주세요`); return; }
       next.add(id);
     }
     saved.textContent='저장 중...';
