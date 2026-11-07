@@ -609,8 +609,23 @@ const LBK = 'bt_lb_v2';
 
 /* 관리자 계정 (닉네임 + PIN 둘 다 맞아야 관리자) */
 const ADMIN_NICK = '김진호';
-const ADMIN_PIN  = '8199';
-function isAdmin(){ return getNick()===ADMIN_NICK && getPin()===ADMIN_PIN; }
+/* 관리자 비밀번호는 파일에 넣지 않아요. 아래는 되돌릴 수 없게 바꾼 값(해시)만 있어요.
+   비밀번호 바꾸기: E:\\app_make4\\brain-training\\관리자비번바꾸기.bat */
+const ADMIN_H = { salt:'811e12ed056bc73d', iter:300000, hash:'6e63ab4780ec22f0bb73c17863a3c62697b6dc77664c1489d3773565220118ee' };
+const ADMIN_KEY = 'bt_admin_k';
+let ADMIN_OK = false;
+function isAdmin(){ return getNick()===ADMIN_NICK && ADMIN_OK; }
+function _hex(buf){ return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''); }
+async function adminDerive(pw){
+  const enc=new TextEncoder();
+  const key=await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveBits']);
+  return _hex(await crypto.subtle.deriveBits({name:'PBKDF2', salt:enc.encode(ADMIN_H.salt), iterations:ADMIN_H.iter, hash:'SHA-256'}, key, 256));
+}
+async function adminCheckKey(k){
+  if(!k || !(window.crypto && crypto.subtle)) return false;
+  return _hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(k))) === ADMIN_H.hash;
+}
+async function adminRestore(){ try{ ADMIN_OK = await adminCheckKey(localStorage.getItem(ADMIN_KEY)); }catch(e){ ADMIN_OK=false; } }
 
 /* ── 홈에 올릴 게임 선택 (관리자가 개수 제한 없이 선정; Firebase로 모든 사용자 공유) ──
    config/games = { enabled:[...], disabled:[...] }  (disabled는 예전 버전 앱 호환용) */
@@ -836,9 +851,9 @@ function showAdminLogin(){
   ov.innerHTML=`
     <div class="modal-box">
       <div class="modal-title">🔧 관리자 로그인</div>
-      <div class="modal-msg" style="margin-bottom:14px">관리자 닉네임과 PIN을 입력하세요.</div>
+      <div class="modal-msg" style="margin-bottom:14px">관리자 닉네임과 관리자 비밀번호를 입력하세요.</div>
       <input class="nick-input" id="aN" type="text" placeholder="관리자 닉네임" autocomplete="off" spellcheck="false" style="margin-bottom:10px;font-size:16px">
-      <input class="nick-input" id="aP" type="password" inputmode="numeric" maxlength="4" placeholder="PIN 4자리" autocomplete="off" style="margin-bottom:6px;font-size:16px;text-align:center;letter-spacing:0.3em">
+      <input class="nick-input" id="aP" type="password" maxlength="64" placeholder="관리자 비밀번호" autocomplete="off" style="margin-bottom:6px;font-size:16px;text-align:center">
       <div id="aErr" style="font-size:12px;color:var(--red);min-height:18px;margin-bottom:10px"></div>
       <div class="modal-actions">
         <button class="modal-btn cancel" id="aC">취소</button>
@@ -850,9 +865,12 @@ function showAdminLogin(){
   ov.querySelector('#aC').onclick=close;
   ov.addEventListener('click',(e)=>{ if(e.target===ov) close(); });
   const nEl=ov.querySelector('#aN'), pEl=ov.querySelector('#aP'), errEl=ov.querySelector('#aErr');
-  ov.querySelector('#aO').onclick=()=>{
-    if(nEl.value.trim()===ADMIN_NICK && pEl.value===ADMIN_PIN){
-      setNick(ADMIN_NICK); setPin(ADMIN_PIN);
+  ov.querySelector('#aO').onclick=async ()=>{
+    errEl.textContent='확인 중…';
+    let k=''; try{ k = await adminDerive(pEl.value); }catch(e){}
+    if(nEl.value.trim()===ADMIN_NICK && await adminCheckKey(k)){
+      localStorage.setItem(ADMIN_KEY, k); ADMIN_OK = true;
+      setNick(ADMIN_NICK);
       close();
       go('home');
     } else {
@@ -2341,7 +2359,7 @@ function renderRoom({code}){
 try{ const _rq=new URLSearchParams(location.search).get('room'); if(_rq && /^\d{4}$/.test(_rq)) sessionStorage.setItem('bt_pending_room', _rq); }catch(e){}
 
 /* 시작 */
-(window.__fbReady?window.__fbReady:Promise.resolve()).then(function(){return loadGameConfig();}).then(function(){go('home');});
+(window.__fbReady?window.__fbReady:Promise.resolve()).then(function(){return adminRestore();}).then(function(){return loadGameConfig();}).then(function(){go('home');});
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
